@@ -10,7 +10,9 @@ const DIRECTION = {
 
 const ASSETS = {
     font : {
-        fontAwesome:'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff'
+        fontAwesome:'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff',
+        chihaya:'./font/ちはや毛筆-free-.ttf',
+        noto:'./font/NotoSerifJP-Regular.otf',
     },
     image : {
         'rat': './img/rat.png',
@@ -24,4 +26,8 @@ const SCREEN_HEIGHT = 960;
 
 const SPRITE_SIZE  = 160;
 const MOVE_X = 200;
+
+const FALL_SPEED_MAX = 1000;
+const FALL_SPEED_MIN = 6000;
+const FALL_SPEED_ADD = -500;
 

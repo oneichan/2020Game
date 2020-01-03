@@ -5,9 +5,16 @@ phina.define('MainScene', {
 
     init: function () {
         this.superInit();
+        this.backgroundColor = 'floralwhite';
          
         var fallItemGroup = DisplayElement().addChildTo(this);
         var foreGroundGroup = DisplayElement().addChildTo(this);
+
+        var fallspeed = FALL_SPEED_MIN;
+        var speedUpCount = 0;
+        var speedUpWait = 5000;
+
+        var gameTime = 5000;// 30秒
 
         var rat = Rat();
         rat.addChildTo(foreGroundGroup)
@@ -30,8 +37,15 @@ phina.define('MainScene', {
         rightButton.onpush = function(){rat.move(DIRECTION.right);};
 
         var scoreLabel = Label('チーズ0こ');
+        scoreLabel.fontFamily = 'noto'
         scoreLabel.addChildTo(foreGroundGroup)
         .setPosition(this.gridX.center(),this.gridY.span(15));
+
+        var timeLabel = Label(gameTime / 1000 + '秒');
+        timeLabel.fontFamily = 'noto';
+        timeLabel.fontSize = 50;
+        timeLabel.addChildTo(foreGroundGroup)
+        .setPosition(this.gridX.center(),this.gridY.span(1));
 
         var posx = this.gridX.center();
         var fallItemPosition = [posx,posx + MOVE_X, posx - MOVE_X];
@@ -40,6 +54,21 @@ phina.define('MainScene', {
 
         // 更新処理
         this.update = function(app){
+            gameTime -= app.deltaTime;
+            timeLabel.text = parseInt(gameTime / 1000, 10) + '秒';
+
+            if (gameTime < 0) {
+                self.exit('result',{score:score});
+            }
+            if (speedUpCount > speedUpWait){
+                fallspeed += FALL_SPEED_ADD;
+                if (fallspeed < FALL_SPEED_MAX) {
+                    fallspeed = FALL_SPEED_MAX;
+                }
+                speedUpCount = 0;
+            }else  {
+                speedUpCount += app.deltaTime;
+            }
 
             if (self.countTime > self.waitTime) {
                 self.countTime = 0;
@@ -50,9 +79,9 @@ phina.define('MainScene', {
                 var item = null;
                 var num = rand.randint(0,39) % 5;
                 if (num == 0) {
-                    item = Cat();
+                    item = Cat(fallspeed);
                 }else{
-                    item = Cheese();
+                    item = Cheese(fallspeed);
                 }
 
                 // 生成位置
@@ -76,7 +105,7 @@ phina.define('MainScene', {
                     return;
                 }
                 if (item.tag == Cat.tag) {
-                    self.exit({score: score});
+                    self.exit('gameOver');
                     return;
                 }
 
@@ -128,9 +157,9 @@ phina.define('Rat',{
 phina.define('FallItem',{
     superClass: 'PixelSprite',
     tag: 't',
-    init: function(img,tag){
+    init: function(img,tag,fallspeed){
         this.superInit(img, SPRITE_SIZE, SPRITE_SIZE);
-        this.tweener.moveBy(0,2000, 5000);
+        this.tweener.moveBy(0,2000, fallspeed);
         this.tag = tag;
 
         this.update = function(){
@@ -143,8 +172,8 @@ phina.define('FallItem',{
 
 phina.define('Cheese',{
     superClass: 'FallItem',
-    init: function(){
-        this.superInit('cheese',Cheese.tag);
+    init: function(fallspeed){
+        this.superInit('cheese',Cheese.tag,fallspeed);
     },
     _static:{
         tag: 'cheese'
@@ -153,8 +182,8 @@ phina.define('Cheese',{
 
 phina.define('Cat',{
     superClass: 'FallItem',
-    init: function(){
-        this.superInit('cat',Cat.tag);
+    init: function(fallspeed){
+        this.superInit('cat',Cat.tag,fallspeed);
     },
     _static:{
         tag: 'cat'
@@ -166,6 +195,9 @@ phina.define('ArrowButton', {
     init: function (options) {
         options = (options || {}).$safe(ArrowButton.defaults);
         this.superInit(options);
+        this.fill = 'white';
+        this.stroke = 'black';
+        this.fontColor = 'black';
 
         // 矢印の追加
         this.fontSize = 70;
