@@ -220,7 +220,7 @@ phina.define('ArrowButton', {
         }
 
         // サイズ変更
-        this.setSize(120, 120);
+        this.setSize(150, 150);
     },
     _static: {
         defaults: {
