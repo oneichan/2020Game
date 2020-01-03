@@ -1,7 +1,7 @@
 phina.define('MainScene', {
     superClass: 'DisplayScene',
     countTime: 0,
-    waitTime: 1000,
+    waitTime: 700,
 
     init: function () {
         this.superInit();
@@ -14,7 +14,7 @@ phina.define('MainScene', {
         var speedUpCount = 0;
         var speedUpWait = 5000;
 
-        var gameTime = 5000;// 30秒
+        var gameTime = GAME_TIME + 1;
 
         var rat = Rat();
         rat.addChildTo(foreGroundGroup)
@@ -57,7 +57,7 @@ phina.define('MainScene', {
             gameTime -= app.deltaTime;
             timeLabel.text = parseInt(gameTime / 1000, 10) + '秒';
 
-            if (gameTime < 0) {
+            if (gameTime <= 0) {
                 self.exit('result',{score:score});
             }
             if (speedUpCount > speedUpWait){
@@ -77,7 +77,7 @@ phina.define('MainScene', {
 
                 // 生成物
                 var item = null;
-                var num = rand.randint(0,39) % 5;
+                var num = rand.randint(0,39) % 4;
                 if (num == 0) {
                     item = Cat(fallspeed);
                 }else{

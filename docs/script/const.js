@@ -31,3 +31,5 @@ const FALL_SPEED_MAX = 1000;
 const FALL_SPEED_MIN = 6000;
 const FALL_SPEED_ADD = -500;
 
+const GAME_TIME = 30000;
+
