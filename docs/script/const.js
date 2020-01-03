@@ -13,9 +13,9 @@ const ASSETS = {
         fontAwesome:'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff'
     },
     image : {
-        'rat': 'img/rat.png',
-        'cheese': 'img/cheese.png',
-        'cat': 'img/cat.png',
+        'rat': './img/rat.png',
+        'cheese': './img/cheese.png',
+        'cat': './img/cat.png',
     }
 };
 
